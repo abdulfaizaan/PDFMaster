@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-primary: var(--app-primary);
+  --color-primary-active: var(--app-primary-active);
+  --color-primary-disabled: var(--app-primary-disabled);
+  --color-ink: var(--app-ink);
+  --color-body: var(--app-body);
+  --color-body-strong: var(--app-body-strong);
+  --color-muted: var(--app-muted);
+  --color-muted-soft: var(--app-muted-soft);
+  --color-hairline: var(--app-hairline);
+  --color-hairline-soft: var(--app-hairline-soft);
+  --color-canvas: var(--app-canvas);
+  --color-surface-soft: var(--app-surface-soft);
+  --color-surface-card: var(--app-surface-card);
+  --color-surface-cream-strong: var(--app-surface-cream-strong);
+  --color-surface-dark: var(--app-surface-dark);
+  --color-surface-dark-elevated: var(--app-surface-dark-elevated);
+  --color-surface-dark-soft: var(--app-surface-dark-soft);
+  --color-on-primary: var(--app-on-primary);
+  --color-on-dark: var(--app-on-dark);
+  --color-on-dark-soft: var(--app-on-dark-soft);
+  
+  --color-background: var(--app-canvas);
+  --color-foreground: var(--app-ink);
+  --color-card: var(--app-surface-card);
+  --color-card-foreground: var(--app-ink);
+  --color-popover: var(--app-canvas);
+  --color-popover-foreground: var(--app-ink);
+  --color-border: var(--app-hairline);
+  --color-input: var(--app-hairline);
+  --color-ring: var(--app-primary);
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+}
+
+:root {
+  --app-primary: #cc785c;
+  --app-primary-active: #a9583e;
+  --app-primary-disabled: #e6dfd8;
+  --app-ink: #141413;
+  --app-body: #3d3d3a;
+  --app-body-strong: #252523;
+  --app-muted: #6c6a64;
+  --app-muted-soft: #8e8b82;
+  --app-hairline: #e6dfd8;
+  --app-hairline-soft: #ebe6df;
+  --app-canvas: #f4f1e8;
+  --app-surface-soft: #efe9de;
+  --app-surface-card: #e8e0d2;
+  --app-surface-cream-strong: #dcd3c3;
+  --app-surface-dark: #181715;
+  --app-surface-dark-elevated: #252320;
+  --app-surface-dark-soft: #1f1e1b;
+  --app-on-primary: #ffffff;
+  --app-on-dark: #faf9f5;
+  --app-on-dark-soft: #a09d96;
+}
+
+.dark {
+  --app-canvas: #181715;
+  --app-surface-soft: #1f1e1b;
+  --app-surface-card: #252320;
+  --app-surface-cream-strong: #302e2a;
+  
+  --app-ink: #faf9f5;
+  --app-body: #e6dfd8;
+  --app-body-strong: #ebe6df;
+  
+  --app-surface-dark: #faf9f5;
+  --app-surface-dark-elevated: #efe9de;
+  --app-surface-dark-soft: #f5f0e8;
+  
+  --app-on-dark: #141413;
+  --app-on-dark-soft: #3d3d3a;
+
+  --app-hairline: #302e2a;
+  --app-hairline-soft: #252320;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+}

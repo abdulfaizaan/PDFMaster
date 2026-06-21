@@ -1,0 +1,148 @@
+"use client";
+
+import React, { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
+
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
+      const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || data.errors?.[0]?.message || "Invalid credentials");
+      }
+
+      login(data.token, data.user);
+      router.push("/");
+    } catch (err: any) {
+      setError(err.message || "An error occurred during login.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex-1 flex w-full min-h-[calc(100vh-64px)]">
+      {/* Left Pane - Brand Side */}
+      <div className="hidden lg:flex flex-col justify-between w-1/2 bg-surface-dark p-12 text-on-dark-soft border-r border-hairline/20">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="text-on-dark p-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+          </div>
+          <span className="font-bold text-xl tracking-tight text-on-dark">PDFMaster</span>
+        </Link>
+        <div className="max-w-md">
+          <h2 className="text-4xl font-display font-normal text-on-dark mb-4 tracking-tight leading-snug">
+            The ultimate toolkit for your documents, now completely open source.
+          </h2>
+          <p className="text-lg">
+            Join thousands of professionals who trust PDFMaster for merging, splitting, and converting their PDFs securely.
+          </p>
+        </div>
+        <div className="text-sm">
+          © {new Date().getFullYear()} PDFMaster Inc.
+        </div>
+      </div>
+
+      {/* Right Pane - Form Side */}
+      <div className="flex-1 flex items-center justify-center p-4 lg:p-8 bg-canvas">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-sm"
+        >
+          <div className="space-y-6">
+            <div className="space-y-2 text-center lg:text-left">
+              <h1 className="text-3xl font-display font-medium tracking-tight text-ink">Welcome back</h1>
+              <p className="text-body text-base">
+                Enter your email and password to access your account.
+              </p>
+            </div>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {error && (
+                <div className="p-3 text-sm text-red-600 bg-red-500/10 rounded-md border border-red-500/20">
+                  {error}
+                </div>
+              )}
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com…"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoComplete="email"
+                  spellCheck={false}
+                />
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  <Link href="#" className="text-sm font-medium text-ink hover:underline underline-offset-4">
+                    Forgot password?
+                  </Link>
+                </div>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                />
+              </div>
+              <div className="pt-2 flex flex-col gap-4">
+                <Button type="submit" className="w-full bg-ink text-canvas hover:bg-ink/90" disabled={isLoading}>
+                  {isLoading ? (
+                    <>
+                      <Loader2 aria-hidden="true" className="mr-2 h-4 w-4 animate-spin" />
+                      Signing in…
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
+                </Button>
+                <div className="text-sm text-center lg:text-left text-muted">
+                  Don’t have an account?{" "}
+                  <Link href="/signup" className="text-ink font-medium hover:underline underline-offset-4">
+                    Sign up
+                  </Link>
+                </div>
+              </div>
+            </form>
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
