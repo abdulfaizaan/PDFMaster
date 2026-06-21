@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
@@ -34,6 +35,14 @@ export default function RootLayout({
       className={`${fontSans.variable} ${fontDisplay.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6776374477036348"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
+      </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
         <ThemeProvider
           attribute="class"
