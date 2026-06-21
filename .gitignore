@@ -1,0 +1,20 @@
+# IDE and Tooling
+.agents/
+.gemini/
+skills-lock.json
+
+# Environment Variables
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Large Files
+*.exe
+gs_installer.exe
+
+# Dependencies
+node_modules/
+dist/
+out/
+build/
