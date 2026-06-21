@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { Inter } from "next/font/google";
+
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const fontSans = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const fontDisplay = Cormorant_Garamond({
-  variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: "MergeMaster - Free PDF Converter & Editor Online",
@@ -35,7 +27,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fontSans.variable} ${fontDisplay.variable} h-full antialiased`}
+      className={`h-full antialiased ${inter.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -46,7 +38,7 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20">
+      <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20 font-sans">
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

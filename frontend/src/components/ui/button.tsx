@@ -1,36 +1,26 @@
-import { Button as ButtonPrimitive } from "@base-ui/react/button"
+import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-md border border-transparent bg-clip-padding text-sm font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-primary focus-visible:ring-3 focus-visible:ring-primary/20 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-red-500 aria-invalid:ring-3 aria-invalid:ring-red-500/20 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  // Base styles: transform scale(0.95) on active is the system-wide micro-interaction
+  "group/button inline-flex items-center justify-center whitespace-nowrap outline-none select-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 font-sans active:scale-[0.95] focus-visible:ring-2 focus-visible:ring-primary-focus transition-all",
   {
     variants: {
       variant: {
-        default: "bg-primary text-white hover:bg-primary-active",
-        outline:
-          "border border-hairline bg-transparent hover:bg-surface-soft hover:text-ink aria-expanded:bg-surface-soft aria-expanded:text-ink",
-        secondary:
-          "border border-hairline bg-canvas text-ink hover:bg-surface-soft aria-expanded:bg-surface-soft aria-expanded:text-ink",
-        ghost:
-          "hover:bg-surface-soft hover:text-ink aria-expanded:bg-surface-soft aria-expanded:text-ink",
-        destructive:
-          "bg-red-500/10 text-red-600 hover:bg-red-500/20 focus-visible:border-red-500/40 focus-visible:ring-red-500/20",
+        default: "bg-primary text-on-primary rounded-pill",
+        destructive: "bg-red-500 text-white rounded-pill hover:bg-red-600",
+        outline: "border border-hairline bg-transparent hover:bg-surface-soft text-ink rounded-pill",
+        secondary: "bg-surface-soft text-ink hover:bg-surface-cream-strong rounded-pill",
+        ghost: "hover:bg-surface-soft hover:text-ink text-ink rounded-md",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
-        default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-[min(var(--radius-md),10px)] px-2 text-xs in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem] in-data-[slot=button-group]:rounded-lg has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs":
-          "size-6 rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm":
-          "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "size-9",
+        default: "px-[22px] py-[11px] text-[17px] font-[400] leading-[1.47] tracking-[-0.374px]",
+        sm: "px-[15px] py-[8px] text-[14px] font-[400] leading-[1.29] tracking-[-0.224px]",
+        lg: "px-[28px] py-[14px] text-[18px] font-[400] leading-none",
+        icon: "h-10 w-10",
       },
     },
     defaultVariants: {
@@ -40,19 +30,25 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  className?: string
+}
+
+export function Button({
   className,
-  variant = "default",
-  size = "default",
   ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
+}: ButtonProps) {
   return (
-    <ButtonPrimitive
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+    <button
+      className={cn(
+        buttonVariants(props),
+        "disabled:pointer-events-none disabled:opacity-50",
+        "aria-invalid:border-red-500 aria-invalid:ring-3 aria-invalid:ring-red-500/20",
+        className
+      )}
       {...props}
     />
   )
 }
 
-export { Button, buttonVariants }
+export { buttonVariants }
