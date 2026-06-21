@@ -6,7 +6,6 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { FileUp, File, X, Loader2, Download, Minimize2, ShieldCheck } from "lucide-react";
-import { PDFDocument } from "pdf-lib";
 
 export default function CompressPdfPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -32,6 +31,7 @@ export default function CompressPdfPage() {
   const removeFile = () => {
     setFile(null);
     setLevel("recommended");
+    setCompressedUrl(null);
   };
 
   const handleCompress = async () => {
@@ -44,14 +44,21 @@ export default function CompressPdfPage() {
     setError(null);
 
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-      
-      // Local compression is lightweight compared to Ghostscript
-      // Saving strips some unused metadata and unreferenced objects
-      const compressedPdfBytes = await pdfDoc.save({ useObjectStreams: true });
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("level", level);
 
-      const blob = new Blob([compressedPdfBytes as any], { type: "application/pdf" });
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
+      const response = await fetch(`${backendUrl}/api/compress`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Compression failed on the server. Make sure the backend is running.");
+      }
+
+      const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       setCompressedUrl(url);
 

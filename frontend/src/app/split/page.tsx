@@ -34,6 +34,7 @@ export default function SplitPdfPage() {
   const removeFile = () => {
     setFile(null);
     setRangeStr("");
+    setSplitUrl(null);
   };
 
   const handleSplit = async () => {
