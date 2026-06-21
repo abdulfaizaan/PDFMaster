@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,6 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,20 +24,15 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
-      const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || data.errors?.[0]?.message || "Invalid credentials");
+      if (error) {
+        throw new Error(error.message);
       }
 
-      login(data.token, data.user);
       router.push("/");
     } catch (err: any) {
       setError(err.message || "An error occurred during login.");

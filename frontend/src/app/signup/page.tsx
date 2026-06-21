@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,6 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,21 +25,20 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3333";
-      const response = await fetch(`${apiUrl}/api/v1/auth/signup`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ fullName, email, password }),
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+          },
+        },
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || data.errors?.[0]?.message || "Failed to create account");
+      if (error) {
+        throw new Error(error.message);
       }
 
-      // Automatically log the user in using the returned token
-      login(data.token, data.user);
       router.push("/");
     } catch (err: any) {
       setError(err.message || "An error occurred during sign up.");

@@ -39,6 +39,9 @@ export function Header() {
             <Link href="/compress" className="transition-colors hover:text-foreground">Compress PDF</Link>
             <Link href="/sign" className="transition-colors hover:text-foreground">Sign PDF</Link>
             <Link href="/jpg-to-pdf" className="transition-colors hover:text-foreground">JPG to PDF</Link>
+            <Link href="/chat" className="transition-colors font-semibold bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent hover:opacity-80">
+              AI Chat
+            </Link>
           </nav>
         </div>
         <div className="flex items-center gap-4">
@@ -49,7 +52,7 @@ export function Header() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                   <UserIcon aria-hidden="true" className="h-4 w-4" />
-                  {user.fullName}
+                  {user.user_metadata?.full_name || user.email}
                 </div>
                 <Button variant="ghost" size="sm" onClick={logout} className="text-muted-foreground hover:text-foreground">
                   <LogOut aria-hidden="true" className="h-4 w-4 mr-2" />
