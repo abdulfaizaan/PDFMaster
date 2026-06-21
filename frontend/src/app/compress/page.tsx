@@ -213,7 +213,7 @@ export default function CompressPdfPage() {
               <Button onClick={removeFile} variant="outline" className="rounded-full px-6 border-teal-500/20 hover:bg-teal-500/10">
                 Compress Another File
               </Button>
-              <a href={compressedUrl} download="compressed-pdfmaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-teal-500/20 bg-teal-500 hover:bg-teal-600")}>
+              <a href={compressedUrl} download="compressed-mergemaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-teal-500/20 bg-teal-500 hover:bg-teal-600")}>
                 Download Again
               </a>
             </div>

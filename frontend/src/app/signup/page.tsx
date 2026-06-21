@@ -55,7 +55,7 @@ export default function SignupPage() {
           <div className="text-on-dark p-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
           </div>
-          <span className="font-bold text-xl tracking-tight text-on-dark">PDFMaster</span>
+          <span className="font-bold text-xl tracking-tight text-on-dark">MergeMaster</span>
         </Link>
         <div className="max-w-md">
           <h2 className="text-4xl font-display font-normal text-on-dark mb-4 tracking-tight leading-snug">
@@ -66,7 +66,7 @@ export default function SignupPage() {
           </p>
         </div>
         <div className="text-sm">
-          © {new Date().getFullYear()} PDFMaster Inc.
+          © {new Date().getFullYear()} MergeMaster Inc.
         </div>
       </div>
 
@@ -82,7 +82,7 @@ export default function SignupPage() {
             <div className="space-y-2 text-center lg:text-left">
               <h1 className="text-3xl font-display font-medium tracking-tight text-ink">Create an account</h1>
               <p className="text-body text-base">
-                Enter your information to get started with PDFMaster.
+                Enter your information to get started with MergeMaster.
               </p>
             </div>
             

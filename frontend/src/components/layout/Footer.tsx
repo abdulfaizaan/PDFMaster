@@ -11,7 +11,7 @@ export function Footer() {
               <div className="text-[#faf9f5] p-1">
                 <FileDown aria-hidden="true" className="h-5 w-5" />
               </div>
-              <span className="font-bold text-lg tracking-tight text-[#faf9f5]">PDFMaster</span>
+              <span className="font-bold text-lg tracking-tight text-[#faf9f5]">MergeMaster</span>
             </Link>
             <p className="text-sm max-w-xs leading-relaxed">
               The ultimate open-source PDF toolkit. Merge, split, compress, convert, and edit PDFs for free without any limits.
@@ -38,7 +38,7 @@ export function Footer() {
         </div>
         <div className="mt-12 border-t border-[#302e2a] pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm">
-            © {new Date().getFullYear()} PDFMaster. Built with open source.
+            © {new Date().getFullYear()} MergeMaster. Built with open source.
           </p>
           <div className="flex gap-4">
             <Link href="#" className="hover:text-[#faf9f5] transition-colors">

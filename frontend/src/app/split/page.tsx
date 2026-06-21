@@ -239,7 +239,7 @@ export default function SplitPdfPage() {
               <Button onClick={removeFile} variant="outline" className="rounded-full px-6 border-orange-500/20 hover:bg-orange-500/10">
                 Split Another File
               </Button>
-              <a href={splitUrl} download="split-pdfmaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-orange-500/20 bg-orange-500 hover:bg-orange-600")}>
+              <a href={splitUrl} download="split-mergemaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-orange-500/20 bg-orange-500 hover:bg-orange-600")}>
                 Download Again
               </a>
             </div>

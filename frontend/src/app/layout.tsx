@@ -18,7 +18,7 @@ const fontDisplay = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "PDFMaster - Free PDF Converter & Editor Online",
+  title: "MergeMaster - Free PDF Converter & Editor Online",
   description: "PDF free download, compress PDF, PDF merge, PDF online, PDF to PDF converter, PDF converter Word to PDF. Merge, split, compress, and convert PDFs entirely for free.",
   keywords: ["PDF free download", "PDF converter", "PDF converter free", "Compress PDF", "PDF merge", "PDF online", "PDF to PDF converter", "PDF converter Word to PDF"],
 };

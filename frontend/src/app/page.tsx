@@ -57,7 +57,7 @@ export default function Home() {
       <section className="w-full py-24 md:py-32 flex flex-col items-center justify-center text-center px-4 bg-canvas">
         <div className="inline-flex items-center rounded-full border border-hairline bg-surface-soft px-3 py-1 text-sm text-ink mb-8 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 duration-700">
           <span className="flex h-2 w-2 rounded-full bg-primary mr-2 motion-safe:animate-pulse"></span>
-          PDFMaster&nbsp;v2.0 is now live
+          MergeMaster&nbsp;v2.0 is now live
         </div>
         
         <h1 className="text-5xl md:text-6xl lg:text-[64px] leading-[1.05] font-display font-normal tracking-[-1.5px] max-w-4xl mb-6 text-balance text-ink motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-6 duration-700 delay-100">
@@ -82,7 +82,7 @@ export default function Home() {
       <section id="features" className="w-full max-w-7xl px-4 py-16 md:py-24">
         <div className="text-center mb-16 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 duration-700">
           <h2 className="text-4xl md:text-5xl font-display font-normal tracking-[-1px] mb-4 text-balance">Most Popular Tools</h2>
-          <p className="text-muted text-lg">Join millions of users who trust PDFMaster for their document needs.</p>
+          <p className="text-muted text-lg">Join millions of users who trust MergeMaster for their document needs.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

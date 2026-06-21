@@ -2,8 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | PDFMaster",
-  description: "Privacy policy for PDFMaster PDF converter and editor.",
+  title: "Privacy Policy | MergeMaster",
+  description: "Privacy policy for MergeMaster PDF converter and editor.",
 };
 
 export default function PrivacyPolicy() {
@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">1. Local Processing Guarantee</h2>
           <p>
-            PDFMaster is built on a local-first architecture. When you use our core tools (such as Compress PDF, PDF Merge, and PDF Converter), <strong>your files never leave your device</strong>. All processing is done securely within your web browser using WebAssembly. We do not upload, store, or have any access to your documents.
+            MergeMaster is built on a local-first architecture. When you use our core tools (such as Compress PDF, PDF Merge, and PDF Converter), <strong>your files never leave your device</strong>. All processing is done securely within your web browser using WebAssembly. We do not upload, store, or have any access to your documents.
           </p>
         </section>
 

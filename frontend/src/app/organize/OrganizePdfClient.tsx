@@ -385,7 +385,7 @@ export default function OrganizePdfPage() {
               <Button onClick={removeFile} variant="outline" className="rounded-full px-6 border-indigo-500/20 hover:bg-indigo-500/10">
                 Organize Another File
               </Button>
-              <a href={organizedUrl} download="organized-pdfmaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-indigo-500/20 bg-indigo-500 hover:bg-indigo-600")}>
+              <a href={organizedUrl} download="organized-mergemaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-indigo-500/20 bg-indigo-500 hover:bg-indigo-600")}>
                 Download Again
               </a>
             </div>

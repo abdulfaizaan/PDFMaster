@@ -2,8 +2,8 @@ import React from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms and Conditions | PDFMaster",
-  description: "Terms and conditions for using PDFMaster services.",
+  title: "Terms and Conditions | MergeMaster",
+  description: "Terms and conditions for using MergeMaster services.",
 };
 
 export default function TermsAndConditions() {
@@ -17,14 +17,14 @@ export default function TermsAndConditions() {
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">1. Acceptance of Terms</h2>
           <p>
-            By accessing and using PDFMaster, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our service.
+            By accessing and using MergeMaster, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use our service.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">2. Use of Service</h2>
           <p>
-            PDFMaster provides tools such as PDF free download, PDF converter, PDF merge, and document compression. You agree to use these services only for lawful purposes and in accordance with these Terms. You are solely responsible for the content of the documents you process using our tools.
+            MergeMaster provides tools such as PDF free download, PDF converter, PDF merge, and document compression. You agree to use these services only for lawful purposes and in accordance with these Terms. You are solely responsible for the content of the documents you process using our tools.
           </p>
         </section>
 
@@ -38,14 +38,14 @@ export default function TermsAndConditions() {
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">4. Limitation of Liability</h2>
           <p>
-            PDFMaster is provided "as is" without warranties of any kind. We are not liable for any lost data, corrupted files, or damages resulting from the use of our services. Always maintain backups of your important documents before processing them.
+            MergeMaster is provided "as is" without warranties of any kind. We are not liable for any lost data, corrupted files, or damages resulting from the use of our services. Always maintain backups of your important documents before processing them.
           </p>
         </section>
 
         <section>
           <h2 className="text-2xl font-semibold mt-8 mb-4">5. Intellectual Property</h2>
           <p>
-            You retain all rights to your documents. PDFMaster does not claim any ownership over the files you process. The PDFMaster software, design, and code are protected by intellectual property laws.
+            You retain all rights to your documents. MergeMaster does not claim any ownership over the files you process. The MergeMaster software, design, and code are protected by intellectual property laws.
           </p>
         </section>
       </div>

@@ -56,7 +56,7 @@ export default function MergePdfPage() {
       // Auto-download
       const a = document.createElement("a");
       a.href = url;
-      a.download = "merged-pdfmaster.pdf";
+      a.download = "merged-mergemaster.pdf";
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -184,7 +184,7 @@ export default function MergePdfPage() {
               <Button onClick={() => setMergedUrl(null)} variant="outline" className="rounded-full px-6">
                 Merge More Files
               </Button>
-              <a href={mergedUrl} download="merged-pdfmaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-primary/20")}>
+              <a href={mergedUrl} download="merged-mergemaster.pdf" className={cn(buttonVariants({ variant: "default" }), "rounded-full px-6 shadow-lg shadow-primary/20")}>
                 Download Again
               </a>
             </div>

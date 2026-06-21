@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     });
 
     // 4. Inject PDF Context if provided
-    let systemPrompt = "You are PDFMaster AI, an intelligent assistant designed to help users understand their PDF documents.";
+    let systemPrompt = "You are MergeMaster AI, an intelligent assistant designed to help users understand their PDF documents.";
     
     if (documentContext) {
       systemPrompt += `\n\nHere is the extracted text from the user's PDF document. Use this to answer their questions accurately. Do not invent information that is not in the document.\n\n--- DOCUMENT START ---\n${documentContext}\n--- DOCUMENT END ---`;
