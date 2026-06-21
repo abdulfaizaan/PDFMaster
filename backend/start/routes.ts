@@ -10,6 +10,7 @@
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 import { controllers } from '#generated/controllers'
+import { heavyProcessingLimiter } from '#start/limiter'
 
 router.get('/', () => {
   return { hello: 'world' }
@@ -17,12 +18,12 @@ router.get('/', () => {
 
 router
   .group(() => {
-    router.post('merge', [() => import('#controllers/merge_controller'), 'handle'])
-    router.post('split', [() => import('#controllers/split_controller'), 'handle'])
-    router.post('compress', [() => import('#controllers/compress_controller'), 'handle'])
-    router.post('jpg-to-pdf', [() => import('#controllers/jpg_to_pdf_controller'), 'handle'])
-    router.post('organize', [() => import('#controllers/organize_controller'), 'handle'])
-    router.post('sign', [() => import('#controllers/sign_controller'), 'handle'])
+    router.post('merge', [() => import('#controllers/merge_controller'), 'handle']).use(heavyProcessingLimiter)
+    router.post('split', [() => import('#controllers/split_controller'), 'handle']).use(heavyProcessingLimiter)
+    router.post('compress', [() => import('#controllers/compress_controller'), 'handle']).use(heavyProcessingLimiter)
+    router.post('jpg-to-pdf', [() => import('#controllers/jpg_to_pdf_controller'), 'handle']).use(heavyProcessingLimiter)
+    router.post('organize', [() => import('#controllers/organize_controller'), 'handle']).use(heavyProcessingLimiter)
+    router.post('sign', [() => import('#controllers/sign_controller'), 'handle']).use(heavyProcessingLimiter)
     
     router
       .group(() => {

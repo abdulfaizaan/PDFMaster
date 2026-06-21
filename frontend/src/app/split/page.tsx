@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FileUp, File, X, Loader2, Download, Scissors } from "lucide-react";
+import { FileUp, File, X, Loader2, Download, Scissors, ShieldCheck } from "lucide-react";
+import { PDFDocument } from "pdf-lib";
 
 export default function SplitPdfPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -48,34 +49,66 @@ export default function SplitPdfPage() {
     setIsSplitting(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("range", rangeStr);
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/split", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || "Failed to split PDF. Check your page range.");
+      // Parse range string
+      const pageIndices = new Set<number>();
+      const parts = rangeStr.split(",").map((p) => p.trim());
+      
+      for (const part of parts) {
+        if (!part) continue;
+        if (part.includes("-")) {
+          const [startStr, endStr] = part.split("-");
+          const start = parseInt(startStr, 10);
+          const end = parseInt(endStr, 10);
+          if (isNaN(start) || isNaN(end) || start > end || start < 1) {
+            throw new Error(`Invalid range part: ${part}`);
+          }
+          for (let i = start; i <= end; i++) {
+            pageIndices.add(i - 1); // 0-indexed
+          }
+        } else {
+          const pageNum = parseInt(part, 10);
+          if (isNaN(pageNum) || pageNum < 1) {
+            throw new Error(`Invalid page number: ${part}`);
+          }
+          pageIndices.add(pageNum - 1);
+        }
       }
 
-      const blob = await response.blob();
+      if (pageIndices.size === 0) {
+        throw new Error("No valid pages selected.");
+      }
+
+      const sortedIndices = Array.from(pageIndices).sort((a, b) => a - b);
+      
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      
+      // Filter out out-of-bounds indices
+      const validIndices = sortedIndices.filter(i => i < pdfDoc.getPageCount());
+      
+      if (validIndices.length === 0) {
+        throw new Error("None of the specified pages exist in this PDF.");
+      }
+
+      const splitPdf = await PDFDocument.create();
+      const copiedPages = await splitPdf.copyPages(pdfDoc, validIndices);
+      copiedPages.forEach((page) => splitPdf.addPage(page));
+
+      const splitPdfBytes = await splitPdf.save();
+      const blob = new Blob([splitPdfBytes as any], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setSplitUrl(url);
 
       // Auto-download
       const a = document.createElement("a");
       a.href = url;
-      a.download = "split-pdfmaster.pdf";
+      a.download = `split-${file.name}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      setError(err.message || "An error occurred while splitting the PDF.");
     } finally {
       setIsSplitting(false);
     }
@@ -87,9 +120,13 @@ export default function SplitPdfPage() {
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500">
           Split PDF Pages
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground mb-4">
           Extract specific pages or a range of pages from your PDF file.
         </p>
+        <div className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 py-1.5 px-4 rounded-full max-w-fit mx-auto border border-emerald-200 dark:border-emerald-500/20">
+          <ShieldCheck className="h-4 w-4" />
+          <span>100% Private - Processed entirely on your device</span>
+        </div>
       </div>
 
       {!splitUrl ? (

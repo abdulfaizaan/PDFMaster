@@ -1,11 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { exec } from 'node:child_process'
+import { execFile } from 'node:child_process'
 import { promisify } from 'node:util'
 import crypto from 'node:crypto'
 
-const execAsync = promisify(exec)
+const execFileAsync = promisify(execFile)
 
 export default class CompressController {
   public async handle({ request, response }: HttpContext) {
@@ -32,17 +32,30 @@ export default class CompressController {
       if (level === 'extreme') gsSetting = '/screen' // extreme (72 dpi)
       if (level === 'less') gsSetting = '/printer' // less (300 dpi)
 
-      // Ghostscript executable path (Default installation path)
-      const gsPath = '"C:\\Program Files\\gs\\gs10.03.1\\bin\\gswin64c.exe"'
+      // Ghostscript executable path (from env or fallback)
+      let gsPath = process.env.GS_PATH || 'gs'
+      // Basic fallback for local Windows dev if nothing is provided
+      if (process.platform === 'win32' && !process.env.GS_PATH) {
+        gsPath = 'gswin64c'
+      }
       
       // Temporary output path
       const outputFilename = `${crypto.randomUUID()}.pdf`
       const outputPath = path.join(path.dirname(pdf.tmpPath), outputFilename)
 
-      // Execute Ghostscript to compress the PDF
-      const command = `${gsPath} -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=${gsSetting} -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${outputPath}" "${pdf.tmpPath}"`
+      // Execute Ghostscript to compress the PDF safely
+      const args = [
+        '-sDEVICE=pdfwrite',
+        '-dCompatibilityLevel=1.4',
+        `-dPDFSETTINGS=${gsSetting}`,
+        '-dNOPAUSE',
+        '-dQUIET',
+        '-dBATCH',
+        `-sOutputFile=${outputPath}`,
+        pdf.tmpPath
+      ]
       
-      await execAsync(command)
+      await execFileAsync(gsPath, args)
 
       // Read compressed file
       const compressedPdfBytes = await fs.readFile(outputPath)

@@ -5,7 +5,8 @@ import { useDropzone } from "react-dropzone";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { FileUp, File, X, Loader2, Download, Minimize2 } from "lucide-react";
+import { FileUp, File, X, Loader2, Download, Minimize2, ShieldCheck } from "lucide-react";
+import { PDFDocument } from "pdf-lib";
 
 export default function CompressPdfPage() {
   const [file, setFile] = useState<File | null>(null);
@@ -42,34 +43,27 @@ export default function CompressPdfPage() {
     setIsCompressing(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("level", level);
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/compress", {
-        method: "POST",
-        body: formData,
-      });
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      
+      // Local compression is lightweight compared to Ghostscript
+      // Saving strips some unused metadata and unreferenced objects
+      const compressedPdfBytes = await pdfDoc.save({ useObjectStreams: true });
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || "Failed to compress PDF.");
-      }
-
-      const blob = await response.blob();
+      const blob = new Blob([compressedPdfBytes as any], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setCompressedUrl(url);
 
       // Auto-download
       const a = document.createElement("a");
       a.href = url;
-      a.download = "compressed-pdfmaster.pdf";
+      a.download = `compressed-${file.name}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      setError(err.message || "An error occurred while compressing the PDF.");
     } finally {
       setIsCompressing(false);
     }
@@ -81,9 +75,13 @@ export default function CompressPdfPage() {
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">
           Compress PDF
         </h1>
-        <p className="text-lg text-muted-foreground">
-          Reduce the file size of your PDF while maintaining optimal quality.
+        <p className="text-lg text-muted-foreground mb-4">
+          Perform a lightweight optimization on your PDF file.
         </p>
+        <div className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 py-1.5 px-4 rounded-full max-w-fit mx-auto border border-emerald-200 dark:border-emerald-500/20">
+          <ShieldCheck className="h-4 w-4" />
+          <span>100% Private - Processed entirely on your device</span>
+        </div>
       </div>
 
       {!compressedUrl ? (

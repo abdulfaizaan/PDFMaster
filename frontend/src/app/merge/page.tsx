@@ -5,7 +5,8 @@ import { useDropzone } from "react-dropzone";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { FileUp, File, X, Loader2, Download } from "lucide-react";
+import { FileUp, File, X, Loader2, Download, ShieldCheck } from "lucide-react";
+import { PDFDocument } from "pdf-lib";
 
 export default function MergePdfPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -37,23 +38,18 @@ export default function MergePdfPage() {
     setIsMerging(true);
     setError(null);
 
-    const formData = new FormData();
-    files.forEach((file) => {
-      formData.append("pdfs", file);
-    });
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/merge", {
-        method: "POST",
-        body: formData,
-      });
+      const mergedPdf = await PDFDocument.create();
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || "Failed to merge PDFs");
+      for (const file of files) {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+        const copiedPages = await mergedPdf.copyPages(pdfDoc, pdfDoc.getPageIndices());
+        copiedPages.forEach((page) => mergedPdf.addPage(page));
       }
 
-      const blob = await response.blob();
+      const mergedPdfBytes = await mergedPdf.save();
+      const blob = new Blob([mergedPdfBytes as any], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setMergedUrl(url);
 
@@ -65,7 +61,7 @@ export default function MergePdfPage() {
       a.click();
       document.body.removeChild(a);
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      setError(err.message || "An error occurred while merging the PDFs.");
     } finally {
       setIsMerging(false);
     }
@@ -77,9 +73,13 @@ export default function MergePdfPage() {
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
           Merge PDF Files
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground mb-4">
           Combine multiple PDFs into a single document in seconds.
         </p>
+        <div className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 py-1.5 px-4 rounded-full max-w-fit mx-auto border border-emerald-200 dark:border-emerald-500/20">
+          <ShieldCheck className="h-4 w-4" />
+          <span>100% Private - Processed entirely on your device</span>
+        </div>
       </div>
 
       {!mergedUrl ? (

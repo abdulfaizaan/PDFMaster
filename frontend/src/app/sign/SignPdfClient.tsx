@@ -11,6 +11,8 @@ import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 import SignatureCanvas from "react-signature-canvas";
 import { motion } from "framer-motion";
+import { PDFDocument } from "pdf-lib";
+import { ShieldCheck } from "lucide-react";
 
 // Initialize pdfjs worker
 if (typeof window !== "undefined") {
@@ -115,29 +117,37 @@ export default function SignPdfPage() {
     // Let's update backend to expect percentages (0 to 1). I will do that in next step.
     // Let's pass pct as x, y, width, height.
 
-    const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("signatureBase64", signatureImage);
-    // pageNumber is 1-indexed in UI, backend expects 0-indexed
-    formData.append("pageIndex", (pageNumber - 1).toString());
-    formData.append("x", pctX.toString());
-    formData.append("y", pctY.toString());
-    formData.append("width", pctWidth.toString());
-    formData.append("height", pctHeight.toString());
-    formData.append("isPercentage", "true"); // Hint to backend
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/sign", {
-        method: "POST",
-        body: formData,
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      const pages = pdfDoc.getPages();
+      
+      if (pageNumber - 1 >= pages.length) {
+        throw new Error("Invalid page number.");
+      }
+      const targetPage = pages[pageNumber - 1];
+
+      // Convert data URL to ArrayBuffer
+      const pngImageBytes = await fetch(signatureImage).then((res) => res.arrayBuffer());
+      const pngImage = await pdfDoc.embedPng(pngImageBytes);
+
+      const { width: pdfWidth, height: pdfHeight } = targetPage.getSize();
+
+      const x = pctX * pdfWidth;
+      // Invert Y axis because pdf-lib coordinates start from bottom-left
+      const y = (1 - pctY - pctHeight) * pdfHeight;
+      const width = pctWidth * pdfWidth;
+      const height = pctHeight * pdfHeight;
+
+      targetPage.drawImage(pngImage, {
+        x,
+        y,
+        width,
+        height,
       });
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || "Failed to sign PDF");
-      }
-
-      const blob = await response.blob();
+      const signedPdfBytes = await pdfDoc.save();
+      const blob = new Blob([signedPdfBytes as any], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setSignedUrl(url);
 
@@ -161,9 +171,13 @@ export default function SignPdfPage() {
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">
           Sign PDF Document
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground mb-4">
           Draw your signature and place it anywhere on your PDF.
         </p>
+        <div className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 py-1.5 px-4 rounded-full max-w-fit mx-auto border border-emerald-200 dark:border-emerald-500/20">
+          <ShieldCheck className="h-4 w-4" />
+          <span>100% Private - Processed entirely on your device</span>
+        </div>
       </div>
 
       {!signedUrl ? (

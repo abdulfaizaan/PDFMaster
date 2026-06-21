@@ -5,9 +5,10 @@ import { useDropzone } from "react-dropzone";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
-import { FileUp, File, X, Loader2, Download, Layers, RotateCw, Trash2, GripVertical } from "lucide-react";
+import { FileUp, File, X, Loader2, Download, Layers, RotateCw, Trash2, GripVertical, ShieldCheck } from "lucide-react";
 
 import { Document, Page, pdfjs } from "react-pdf";
+import { PDFDocument, degrees } from "pdf-lib";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
 
@@ -198,39 +199,38 @@ export default function OrganizePdfPage() {
     setIsOrganizing(true);
     setError(null);
 
-    const formData = new FormData();
-    formData.append("pdf", file);
-    
-    const pagesPayload = pages.map((p) => ({
-      index: p.originalIndex,
-      rotation: p.rotation,
-    }));
-    formData.append("pages", JSON.stringify(pagesPayload));
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/organize", {
-        method: "POST",
-        body: formData,
+      const arrayBuffer = await file.arrayBuffer();
+      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      const organizedPdf = await PDFDocument.create();
+
+      // Copy pages in the new order
+      const indicesToCopy = pages.map((p) => p.originalIndex);
+      const copiedPages = await organizedPdf.copyPages(pdfDoc, indicesToCopy);
+
+      copiedPages.forEach((page, index) => {
+        const pageData = pages[index];
+        if (pageData.rotation !== 0) {
+          const currentRotation = page.getRotation().angle;
+          page.setRotation(degrees(currentRotation + pageData.rotation));
+        }
+        organizedPdf.addPage(page);
       });
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || "Failed to organize PDF.");
-      }
-
-      const blob = await response.blob();
+      const organizedPdfBytes = await organizedPdf.save();
+      const blob = new Blob([organizedPdfBytes as any], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setOrganizedUrl(url);
 
       // Auto-download
       const a = document.createElement("a");
       a.href = url;
-      a.download = "organized-pdfmaster.pdf";
+      a.download = `organized-${file.name}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+      setError(err.message || "An error occurred while organizing the PDF.");
     } finally {
       setIsOrganizing(false);
     }
@@ -242,9 +242,13 @@ export default function OrganizePdfPage() {
         <h1 className="text-4xl font-extrabold tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-500">
           Organize PDF
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-lg text-muted-foreground mb-4">
           Sort, delete, and rotate PDF pages easily. Drag and drop to reorder.
         </p>
+        <div className="flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 dark:text-emerald-400 py-1.5 px-4 rounded-full max-w-fit mx-auto border border-emerald-200 dark:border-emerald-500/20">
+          <ShieldCheck className="h-4 w-4" />
+          <span>100% Private - Processed entirely on your device</span>
+        </div>
       </div>
 
       {!organizedUrl ? (
