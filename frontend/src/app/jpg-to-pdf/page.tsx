@@ -161,23 +161,36 @@ export default function JpgToPdfPage() {
     setIsConverting(true);
     setError(null);
 
-    const formData = new FormData();
-    images.forEach((img) => {
-      formData.append("images", img.file);
-    });
-
     try {
-      const response = await fetch("http://localhost:3333/api/v1/jpg-to-pdf", {
-        method: "POST",
-        body: formData,
-      });
+      // Dynamically import PDFDocument to avoid SSR issues if any, but it's fine since it's a click handler
+      const { PDFDocument } = await import("pdf-lib");
+      const pdfDoc = await PDFDocument.create();
 
-      if (!response.ok) {
-        const err = await response.json().catch(() => null);
-        throw new Error(err?.error || err?.message || "Failed to convert images.");
+      for (const imgObj of images) {
+        const fileBytes = await imgObj.file.arrayBuffer();
+        
+        let pdfImage;
+        if (imgObj.file.type === 'image/jpeg' || imgObj.file.type === 'image/jpg') {
+          pdfImage = await pdfDoc.embedJpg(fileBytes);
+        } else if (imgObj.file.type === 'image/png') {
+          pdfImage = await pdfDoc.embedPng(fileBytes);
+        } else {
+          continue; // Skip unsupported formats
+        }
+
+        const { width, height } = pdfImage.scale(1);
+        const page = pdfDoc.addPage([width, height]);
+        
+        page.drawImage(pdfImage, {
+          x: 0,
+          y: 0,
+          width,
+          height,
+        });
       }
 
-      const blob = await response.blob();
+      const pdfBytes = await pdfDoc.save();
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setPdfUrl(url);
 
