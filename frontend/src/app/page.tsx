@@ -122,6 +122,72 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      {/* SEO Content Section */}
+      <section className="w-full max-w-[1024px] px-4 py-16 md:py-24 bg-canvas text-ink-muted-80 space-y-6 text-left border-t border-hairline mt-12">
+        <h2 className="text-[32px] font-[600] text-ink mb-6">The Ultimate PDF Editor for All Your Document Needs</h2>
+        
+        <p className="text-[17px] leading-relaxed">
+          Welcome to your all-in-one digital workspace. When you need a comprehensive <strong>PDF Editor</strong> to manage, modify, and enhance your digital documents, we have everything you need in one centralized platform. In today's fast-paced digital environment, managing files efficiently is more critical than ever. Professionals, students, and casual users alike need dependable solutions that don't require expensive software subscriptions. That is exactly why we bring you tools that function seamlessly, much like the popular platforms you may already be familiar with, such as <em>i love pdf</em>, but engineered with our own unique blend of speed, uncompromising privacy, and rock-solid reliability.
+        </p>
+
+        <p className="text-[17px] leading-relaxed">
+          Are you tired of downloading bulky, resource-heavy software just to make minor tweaks to your documents? Our versatile <strong>pdf editor</strong> lets you modify your files directly from your web browser, saving you time and device storage. With a few simple clicks, you can effortlessly <strong>convert pdf to word</strong> for quick text modifications, ensuring that your formatting remains intact. We also make it incredibly easy to transform your visual assets using our highly optimized <strong>jpg to pdf</strong> and <strong>png to pdf</strong> tools. If you have the opposite requirement—perhaps needing to extract images for a presentation—our <strong>pdf to jpg</strong> conversion feature ensures high-quality image extraction from any document page. A versatile <strong>pdf converter</strong> is an absolute must-have for anyone who handles digital paperwork regularly. We even support varied and niche formats, ensuring you can swiftly convert <strong>pdf to to wordm</strong> and other specialized extensions as dictated by your workflow requirements.
+        </p>
+
+        <h3 className="text-[24px] font-[600] text-ink mt-8 mb-4">Combine and Organize with the Best PDF Combiner</h3>
+        
+        <p className="text-[17px] leading-relaxed">
+          Handling multiple separate files can be a frustrating hassle, especially when you need to send them as a single, cohesive email attachment or submit them to an online portal. This is precisely where our powerful <strong>pdf combiner</strong> comes into play. You can quickly and intuitively <strong>combine pdf</strong> files into one neat, meticulously organized document. If you have several monthly reports, scanned receipts, or lecture notes, simply use our intuitive drag-and-drop interface to <strong>merge pdf</strong> files together in the exact order you want. A good merge tool saves an incredible amount of time and significantly reduces desktop clutter, making it far easier to share important information with your colleagues, professors, or clients without the risk of missing pages.
+        </p>
+
+        <h3 className="text-[24px] font-[600] text-ink mt-8 mb-4">Optimize Your Files: Advanced PDF Compressor</h3>
+        
+        <p className="text-[17px] leading-relaxed">
+          Large, unoptimized files can be notoriously difficult to share via email or upload to strict web portals that enforce strict file size limits. With our advanced <strong>pdf compressor</strong>, you can easily <strong>compress pdf</strong> documents without noticeably compromising their visual quality or text legibility. Our smart compression algorithms strike the perfect balance, ensuring your files remain perfectly readable and highly professional while taking up merely a fraction of their original storage space. A reliable compressor is essential for long-term digital archiving, faster web uploads, and quick sharing on mobile devices. When you combine this powerful feature with our <strong>free pdf editor</strong>, you have a complete, enterprise-grade suite of document tools right at your fingertips.
+        </p>
+
+        <h3 className="text-[24px] font-[600] text-ink mt-8 mb-4">Your Go-To PDF Converter and Document Suite</h3>
+        
+        <p className="text-[17px] leading-relaxed">
+          In summary, whether you need to quickly annotate a page or require a robust, full-featured suite of document manipulation tools, our platform is expertly designed to cater to all your digital needs. The unparalleled ability to seamlessly <strong>convert pdf to word</strong>, leverage a dependable and lightning-fast <strong>pdf converter</strong>, and efficiently <strong>merge pdf</strong> or <strong>compress pdf</strong> files makes our website a vital daily resource for your digital tasks. We take immense pride in offering a <strong>free pdf editor</strong> that easily rivals the most expensive software packages on the market today. Stop wasting your valuable time with complicated, unintuitive software installations. Try our suite of online tools today and experience firsthand the extraordinary ease of having a top-tier <strong>pdf combiner</strong>, an efficient <strong>jpg to pdf</strong> utility, and so much more—all available instantly, securely, and completely free directly within your web browser.
+        </p>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="w-full max-w-[1024px] px-4 py-16 md:py-24 bg-canvas border-t border-hairline">
+        <div className="text-center mb-12">
+          <h2 className="text-[32px] font-[600] text-ink mb-4">Frequently Asked Questions</h2>
+          <p className="text-[17px] text-ink-muted-80">Got questions? We've got answers.</p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h3 className="text-[20px] font-[600] text-ink">Is this PDF editor completely free?</h3>
+            <p className="text-[17px] text-ink-muted-80 leading-relaxed">
+              Yes, all of our core tools, including the PDF combiner, compressor, and converters, are 100% free to use with no hidden fees.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-[20px] font-[600] text-ink">Are my uploaded files secure?</h3>
+            <p className="text-[17px] text-ink-muted-80 leading-relaxed">
+              Absolutely. We prioritize your privacy. All uploaded documents are processed securely and automatically deleted from our servers shortly after processing.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-[20px] font-[600] text-ink">Can I convert a PDF to Word?</h3>
+            <p className="text-[17px] text-ink-muted-80 leading-relaxed">
+              Yes, you can easily use our PDF to Word converter to make your documents editable without losing their original formatting.
+            </p>
+          </div>
+          <div className="space-y-4">
+            <h3 className="text-[20px] font-[600] text-ink">Does it work on mobile devices?</h3>
+            <p className="text-[17px] text-ink-muted-80 leading-relaxed">
+              Yes, our website is fully mobile-responsive. You can seamlessly compress PDFs, merge files, or convert them directly from your smartphone or tablet browser.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

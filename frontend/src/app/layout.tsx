@@ -11,9 +11,42 @@ import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "MergeMaster - Free PDF Converter & Editor Online",
-  description: "PDF free download, compress PDF, PDF merge, PDF online, PDF to PDF converter, PDF converter Word to PDF. Merge, split, compress, and convert PDFs entirely for free.",
-  keywords: ["PDF free download", "PDF converter", "PDF converter free", "Compress PDF", "PDF merge", "PDF online", "PDF to PDF converter", "PDF converter Word to PDF"],
+  title: "Free PDF Editor - Merge, Convert & Compress PDF Documents",
+  description: "The ultimate free pdf editor and pdf converter. Convert pdf to word, jpg to pdf, compress pdf, and merge pdf easily.",
+  keywords: [
+    "PDF Editor",
+    "pdf editor",
+    "pdf to word",
+    "jpg to pdf",
+    "pdf converter",
+    "i love pdf",
+    "pdf to jpg",
+    "pdf combiner",
+    "pdf to to wordm",
+    "combine pdf",
+    "free pdf editor",
+    "convert pdf to word",
+    "png to pdf",
+    "pdf compressor",
+    "compress pdf",
+    "merge pdf"
+  ],
+  icons: {
+    icon: [
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  manifest: '/site.webmanifest',
+  openGraph: {
+    title: "Free PDF Editor - Merge, Convert & Compress PDF",
+    description: "The ultimate free pdf editor and pdf converter. Convert pdf to word, jpg to pdf, compress pdf, and merge pdf easily.",
+    type: "website",
+    siteName: "MergeMaster",
+  },
   other: {
     "google-adsense-account": "ca-pub-6776374477036348",
   },
@@ -37,6 +70,19 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XBTWF24NVS"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-XBTWF24NVS');
+          `}
+        </Script>
       </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground selection:bg-primary/20 font-sans">
         <ThemeProvider
